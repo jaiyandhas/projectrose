@@ -9,14 +9,19 @@ import re
 import spacy
 from typing import Optional
 
-# Load spaCy model once at module level
-try:
-    nlp = spacy.load("en_core_web_sm")
-except OSError:
-    # Fallback: download at first use
-    import subprocess
-    subprocess.run(["python", "-m", "spacy", "download", "en_core_web_sm"], check=True)
-    nlp = spacy.load("en_core_web_sm")
+_nlp = None
+
+def _get_nlp():
+    global _nlp
+    if _nlp is not None:
+        return _nlp
+    try:
+        _nlp = spacy.load("en_core_web_sm")
+    except OSError:
+        import subprocess
+        subprocess.run(["python", "-m", "spacy", "download", "en_core_web_sm"], check=True)
+        _nlp = spacy.load("en_core_web_sm")
+    return _nlp
 
 # Technical keyword vocabulary (AI / CS domain)
 TECH_KEYWORDS = {
@@ -97,6 +102,7 @@ def extract_features(answer_text: str, question_text: Optional[str] = None) -> d
 
     Returns a dict matching the `extracted_features` table columns.
     """
+    nlp = _get_nlp()
     doc = nlp(answer_text)
 
     sentences = list(doc.sents)
