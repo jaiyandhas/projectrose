@@ -145,7 +145,6 @@ export default function ResultsPanel({ loading, result, error }: ResultsPanelPro
                     label="Originality"
                     // Prefer new 0–15 rubric field if present, fall back to legacy 0–10.
                     score={
-                        // @ts-expect-error backend may return new fields not in TS type yet
                         (result as any).opinion_originality_score ??
                         result.originality_score ??
                         0
@@ -158,7 +157,6 @@ export default function ResultsPanel({ loading, result, error }: ResultsPanelPro
                     label="Understanding"
                     // Prefer new 0–10 rubric field if present, fall back to legacy ai_usage_score.
                     score={
-                        // @ts-expect-error backend may return new fields not in TS type yet
                         (result as any).understanding_score ??
                         result.ai_usage_score ??
                         0
@@ -171,7 +169,6 @@ export default function ResultsPanel({ loading, result, error }: ResultsPanelPro
                     label="References"
                     // Prefer new 0–5 rubric field if present, fall back to legacy coverage_score/2.
                     score={
-                        // @ts-expect-error backend may return new fields not in TS type yet
                         (result as any).references_score ??
                         (typeof result.coverage_score === "number" ? result.coverage_score / 2 : 0)
                     }
