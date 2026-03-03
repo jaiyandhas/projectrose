@@ -1,0 +1,325 @@
+@import "tailwindcss";
+
+:root {
+  --bg-primary: #05050a;
+  /* Darker, sleeker Apple-like black background */
+  --bg-secondary: #0a0a14;
+  --bg-card: rgba(20, 20, 30, 0.4);
+  /* More transparent for frosted look */
+  --violet: #9b6cff;
+  /* Softer neon violet */
+  --violet-glow: rgba(155, 108, 255, 0.25);
+  --cyan: #0edae8;
+  /* Brighter aqua cyan */
+  --cyan-glow: rgba(14, 218, 232, 0.2);
+  --text-primary: #ffffff;
+  --text-muted: #8e8e9c;
+  --border: rgba(255, 255, 255, 0.06);
+  --border-hover: rgba(255, 255, 255, 0.15);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Inter";
+  /* Apple vibes */
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Crisp text */
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Glass card */
+.glass-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(28px);
+  /* Deeper blur for Apple glass */
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  /* Smoother corners */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s ease;
+}
+
+.glass-card:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--violet) 0%, var(--cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Project Rose Branding specific text */
+.rose-text {
+  background: linear-gradient(135deg, #ff6b9e 0%, #ff9a8b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* Glow button — primary */
+.btn-primary {
+  background: linear-gradient(135deg, var(--violet) 0%, #834bff 100%);
+  color: white;
+  font-weight: 600;
+  padding: 12px 28px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 0 4px 20px var(--violet-glow), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 30px rgba(155, 108, 255, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Input */
+.input-field {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  /* Lighter texture */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 18px;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 14px;
+  resize: vertical;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  outline: none;
+}
+
+.input-field:focus {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--violet);
+  box-shadow: 0 0 0 3px var(--violet-glow);
+}
+
+.input-field::placeholder {
+  color: var(--text-muted);
+}
+
+/* --- Floating Bubbles Component --- */
+@keyframes floatUp {
+  0% {
+    transform: translateY(110vh) scale(0.8);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 0.6;
+    /* Fade in at bottom */
+  }
+
+  90% {
+    opacity: 0.6;
+    /* Fade out near top */
+  }
+
+  100% {
+    transform: translateY(-10vh) scale(1.2);
+    opacity: 0;
+  }
+}
+
+.bubble {
+  position: absolute;
+  bottom: -100px;
+  border-radius: 50%;
+  /* Beautiful glass rim effect */
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.01) 60%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.05), 0 0 30px rgba(155, 108, 255, 0.1);
+  backdrop-filter: blur(8px);
+  /* Distorts background perfectly */
+  -webkit-backdrop-filter: blur(8px);
+  animation: floatUp 20s linear infinite;
+  z-index: -1;
+}
+
+/* --- Animations --- */
+
+/* Fade + slide up */
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Score count-up pulse */
+@keyframes scorePulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+
+  60% {
+    transform: scale(1.08);
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-score {
+  animation: scorePulse 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Loading orb / Rose pulsing orb */
+@keyframes orbPulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(255, 107, 158, 0.3), 0 0 40px rgba(255, 107, 158, 0.2);
+    transform: scale(1);
+    background: linear-gradient(135deg, #ff6b9e, #8b5cf6);
+  }
+
+  50% {
+    box-shadow: 0 0 40px rgba(255, 107, 158, 0.6), 0 0 80px rgba(139, 92, 246, 0.4);
+    transform: scale(1.1);
+    background: linear-gradient(135deg, #ff9a8b, #06b6d4);
+  }
+}
+
+.orb-pulse {
+  animation: orbPulse 3s ease-in-out infinite;
+  border-radius: 50%;
+}
+
+/* Spin */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Accordion open */
+@keyframes accordionOpen {
+  from {
+    opacity: 0;
+    max-height: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    max-height: 600px;
+    transform: translateY(0);
+  }
+}
+
+.accordion-open {
+  animation: accordionOpen 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  overflow: hidden;
+}
+
+/* Background mesh gradient (Apple-like subtle glow) */
+.bg-mesh {
+  background-color: var(--bg-primary);
+  background-image:
+    radial-gradient(circle 800px at 20% 10%, rgba(155, 108, 255, 0.08) 0%, transparent 80%),
+    radial-gradient(circle 600px at 80% 80%, rgba(14, 218, 232, 0.06) 0%, transparent 80%),
+    radial-gradient(circle 500px at 50% 50%, rgba(255, 107, 158, 0.05) 0%, transparent 100%);
+}
+
+/* Score ring progress */
+.score-ring-bg {
+  stroke: rgba(255, 255, 255, 0.05);
+}
+
+.score-ring-fill {
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Nav */
+.nav-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 10px;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Label */
+.label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  display: block;
+}
