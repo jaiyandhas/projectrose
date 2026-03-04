@@ -109,9 +109,6 @@ export interface MLPrediction {
 }
 
 export const evaluateAnswer = async (payload: EvaluatePayload) => {
-    const { data } = await supabase.auth.getSession();
-    const token = data.session?.access_token;
-
     // Truncate payloads to prevent ML processing timeouts on free tier CPU
     const safePayload = {
         question_text: payload.question_text.slice(0, 1000),
@@ -119,11 +116,8 @@ export const evaluateAnswer = async (payload: EvaluatePayload) => {
         sample_answer_text: payload.sample_answer_text ? payload.sample_answer_text.slice(0, 4000) : undefined
     };
 
-    return axios.post<EvaluationResult>("/api/evaluate", safePayload, {
-        headers: {
-            Authorization: token ? `Bearer ${token}` : ''
-        }
-    }).then((r) => r.data);
+    // Call Render directly to bypass Vercel Hobby 10-second Serverless timeout
+    return api.post<EvaluationResult>("/api/evaluate", safePayload).then((r) => r.data);
 };
 
 export const getHistory = (page = 1, perPage = 10) =>
