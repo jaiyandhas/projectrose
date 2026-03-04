@@ -108,8 +108,16 @@ export interface MLPrediction {
     message: string;
 }
 
-export const evaluateAnswer = (payload: EvaluatePayload) =>
-    api.post<EvaluationResult>("/api/evaluate", payload).then((r) => r.data);
+export const evaluateAnswer = async (payload: EvaluatePayload) => {
+    const { data } = await supabase.auth.getSession();
+    const token = data.session?.access_token;
+
+    return axios.post<EvaluationResult>("/api/evaluate", payload, {
+        headers: {
+            Authorization: token ? `Bearer ${token}` : ''
+        }
+    }).then((r) => r.data);
+};
 
 export const getHistory = (page = 1, perPage = 10) =>
     api
