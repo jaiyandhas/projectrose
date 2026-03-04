@@ -17,6 +17,10 @@ export default function DashboardPage() {
     const [authChecked, setAuthChecked] = useState(false);
 
     useEffect(() => {
+        // Fire-and-forget: wake up Render backend container (cold start)
+        const backendUrl = process.env.NEXT_PUBLIC_API_URL || "https://rose-backend-7aph.onrender.com";
+        fetch(`${backendUrl}/health`).catch(() => { });
+
         supabase.auth.getSession().then(({ data }) => {
             if (!data.session) router.replace("/auth");
             else setAuthChecked(true);

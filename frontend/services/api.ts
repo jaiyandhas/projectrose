@@ -112,7 +112,14 @@ export const evaluateAnswer = async (payload: EvaluatePayload) => {
     const { data } = await supabase.auth.getSession();
     const token = data.session?.access_token;
 
-    return axios.post<EvaluationResult>("/api/evaluate", payload, {
+    // Truncate payloads to prevent ML processing timeouts on free tier CPU
+    const safePayload = {
+        question_text: payload.question_text.slice(0, 1000),
+        answer_text: payload.answer_text.slice(0, 4000),
+        sample_answer_text: payload.sample_answer_text ? payload.sample_answer_text.slice(0, 4000) : undefined
+    };
+
+    return axios.post<EvaluationResult>("/api/evaluate", safePayload, {
         headers: {
             Authorization: token ? `Bearer ${token}` : ''
         }
