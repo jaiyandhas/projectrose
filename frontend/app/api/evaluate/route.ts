@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+// Allow this serverless function to run for up to 60 seconds (Vercel max for Hobby tier default is 10s or 60s max config)
+export const maxDuration = 60;
 export async function POST(request: NextRequest) {
     try {
         const payload = await request.json();
